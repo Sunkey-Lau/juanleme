@@ -1,0 +1,21 @@
+{
+  "name": "juanleme-backend",
+  "version": "1.0.0",
+  "description": "卷了么 App - Backend API Server",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js",
+    "seed": "node src/utils/seedData.js",
+    "init-db": "node -e \"require('./src/config/database').initDB(); console.log('Database initialized'); process.exit(0);\""
+  },
+  "keywords": ["juanleme", "pomodoro", "focus-timer"],
+  "license": "MIT",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "express": "^4.21.0",
+    "express-rate-limit": "^7.4.1",
+    "jsonwebtoken": "^9.0.2"
+  }
+}

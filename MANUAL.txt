@@ -1,0 +1,27 @@
+# 卷了么 手动启动指南
+# 如果 start.bat / start.ps1 都不行，按以下步骤手动启动
+
+## 第1步：打开终端1 - 启动后端
+
+cd /d "C:\Users\LIUCJ\AppData\Local\Claude-3p\local-agent-mode-sessions\a4b8d586\00000000\local_2a5410ea-500d-4f8f-b270-185de2d8f053\outputs\juanleme\backend"
+
+npm install
+
+node src/index.js
+
+# 看到 "卷了么 API Server" 字样说明启动成功
+
+## 第2步：打开终端2 - 启动前端
+
+cd /d "C:\Users\LIUCJ\AppData\Local\Claude-3p\local-agent-mode-sessions\a4b8d586\00000000\local_2a5410ea-500d-4f8f-b270-185de2d8f053\outputs\juanleme\client"
+
+npm install
+
+npx vite --host
+
+# 看到 Local: http://localhost:5173 说明启动成功
+
+## 第3步：打开浏览器
+
+访问 http://localhost:5173
+点击"体验账号一键登录"即可使用
