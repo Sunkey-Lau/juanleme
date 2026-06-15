@@ -2,10 +2,11 @@
   "name": "juanleme",
   "version": "1.0.0",
   "private": true,
+  "engines": {
+    "node": ">=22.5.0"
+  },
   "scripts": {
-    "install:all": "cd backend && npm install && cd ../client && npm install",
-    "build:client": "cd client && npm install && npx vite build",
     "start": "cd backend && npm install && node src/index.js",
-    "dev": "node start.js"
+    "build:client": "cd client && npm install && npx vite build"
   }
 }
