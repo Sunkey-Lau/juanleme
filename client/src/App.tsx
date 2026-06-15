@@ -188,48 +188,12 @@ export default function App() {
     const startTime = timerStartRef.current;
     const endTime = new Date().toISOString();
 
+    // 保留实时累加的值（profile 中的 gold_coin/exp 已经是最新的）
+    // 只把记录提交到服务器，不覆盖前端已算好的值
     try {
       const res = await api.submitTimer(startTime, endTime);
       if (res.code === 200) {
-        // Use server-verified rewards to reconcile local display
-        const { exp_earned, coin_earned, did_level_up, level, current_exp, max_exp, new_achievements } = res.data;
-        const snapshot = focusSnapshotRef.current;
-
-        if (snapshot) {
-          // Base on snapshot + server rewards = server-authoritative values
-          setTotalTime(snapshot.total_time + (currentTime / 1000));
-
-          if (did_level_up) {
-            // Server recalculated level — use what server returned
-            setProfile((prev) => ({
-              ...prev,
-              exp: current_exp,
-              maxExp: max_exp,
-              level,
-              gold_coin: snapshot.gold_coin + coin_earned,
-              total_time: snapshot.total_time + (currentTime / 1000),
-            }));
-          } else {
-            // Simple add — same as server logic per design doc
-            let newExp = snapshot.exp + exp_earned;
-            let lvl = snapshot.level;
-            let currMax = getMaxExpForLevel(lvl);
-            while (newExp >= currMax) {
-              newExp -= currMax;
-              lvl += 1;
-              currMax = getMaxExpForLevel(lvl);
-            }
-            setProfile((prev) => ({
-              ...prev,
-              exp: newExp,
-              maxExp: currMax,
-              level: lvl,
-              gold_coin: snapshot.gold_coin + coin_earned,
-              total_time: snapshot.total_time + (currentTime / 1000),
-            }));
-          }
-        }
-
+        const { new_achievements } = res.data;
         if (new_achievements?.length > 0) {
           setUnreadMessages((p) => p + new_achievements.length);
           showToast(`🎉 解锁 ${new_achievements.length} 个新成就！`);
