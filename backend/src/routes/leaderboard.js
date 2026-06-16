@@ -23,16 +23,16 @@ router.get('/', (req, res) => {
       users = db.prepare(`
         SELECT id, uid, nickname, avatar_id, total_time, level
         FROM users WHERE status = 0
-        ORDER BY total_time DESC LIMIT ?
-      `).all(limit);
+        ORDER BY total_time DESC
+      `).all();
       break;
 
     case 'level':
       users = db.prepare(`
         SELECT id, uid, nickname, avatar_id, total_time, level, total_exp
         FROM users WHERE status = 0
-        ORDER BY level DESC, total_exp DESC LIMIT ?
-      `).all(limit);
+        ORDER BY level DESC, total_exp DESC
+      `).all();
       break;
 
     case 'achievement':
@@ -40,8 +40,8 @@ router.get('/', (req, res) => {
         SELECT u.id, u.uid, u.nickname, u.avatar_id, u.total_time, u.level,
                (SELECT COUNT(*) FROM user_achievements WHERE user_id = u.id) as achievement_count
         FROM users u WHERE u.status = 0
-        ORDER BY achievement_count DESC LIMIT ?
-      `).all(limit);
+        ORDER BY achievement_count DESC
+      `).all();
       break;
 
     default:
@@ -55,9 +55,9 @@ router.get('/', (req, res) => {
     nickname: u.nickname,
     avatar_id: u.avatar_id,
     level: u.level,
-    score: type === 'total_time' ? u.total_time :
-           type === 'level' ? u.total_exp :
-           type === 'achievement' ? u.achievement_count : 0,
+    score: type === 'total_time' ? (u.total_time || 0) :
+           type === 'level' ? (u.total_exp || 0) :
+           type === 'achievement' ? (u.achievement_count || 0) : 0,
   }));
 
   // 查找当前用户排名
@@ -85,7 +85,7 @@ router.get('/', (req, res) => {
         rank = db.prepare(`
           SELECT COUNT(*) + 1 as rank FROM users
           WHERE status = 0 AND (level > (SELECT level FROM users WHERE uid = ?) OR (level = (SELECT level FROM users WHERE uid = ?) AND total_exp > (SELECT total_exp FROM users WHERE uid = ?)))
-        `).get(myUid, myUid).rank;
+        `).get(myUid, myUid, myUid).rank;
         break;
     }
     const myUser = db.prepare('SELECT * FROM users WHERE uid = ?').get(myUid);
