@@ -59,6 +59,7 @@ export default function App() {
   const intervalRef = useRef<number | null>(null);
   const profileRef = useRef(profile);
   const timerStartRef = useRef<string | null>(null);
+  const isSubmittingRef = useRef(false);
   const focusSnapshotRef = useRef<{ total_time: number; exp: number; level: number; maxExp: number; gold_coin: number } | null>(null);
 
   useEffect(() => { profileRef.current = profile; }, [profile]);
@@ -169,8 +170,12 @@ export default function App() {
   };
 
   const handleStart = () => {
+    // 如果上次结算还没完成，不允许开始
+    if (isSubmittingRef.current) {
+      showToast('⏳ 正在结算上次计时，请稍候...');
+      return;
+    }
     timerStartRef.current = new Date().toISOString();
-    // Take a snapshot so real-time accumulation is relative, not compounding
     focusSnapshotRef.current = {
       total_time: totalTime,
       exp: profile.exp,
@@ -185,11 +190,10 @@ export default function App() {
   const handleEnd = async () => {
     if (!timerStartRef.current) return;
     setIsRunning(false);
+    isSubmittingRef.current = true;
     const startTime = timerStartRef.current;
     const endTime = new Date().toISOString();
 
-    // 保留实时累加的值（profile 中的 gold_coin/exp 已经是最新的）
-    // 只把记录提交到服务器，不覆盖前端已算好的值
     try {
       const res = await api.submitTimer(startTime, endTime);
       if (res.code === 200) {
@@ -204,6 +208,7 @@ export default function App() {
     focusSnapshotRef.current = null;
     timerStartRef.current = null;
     setCurrentTime(0);
+    isSubmittingRef.current = false;
   };
 
   const handleSaveProfile = (data: { nickname: string; avatar: string; avatarFrame: string }) => {
