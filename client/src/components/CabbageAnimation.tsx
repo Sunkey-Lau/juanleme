@@ -17,9 +17,6 @@ export function CabbageAnimation({ isEating, animationSkin = 'cabbage' }: Cabbag
       <div className={`text-8xl transition-all duration-500 ${isEating ? 'scale-110 animate-bounce' : 'scale-100'}`}>
         {emoji}
       </div>
-      <div className="text-xs text-white/40 mt-2 font-medium">
-        {isEating ? '正在努力卷...' : '准备开卷'}
-      </div>
     </div>
   );
 }

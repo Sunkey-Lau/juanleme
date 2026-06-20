@@ -34,10 +34,10 @@ export default function App() {
     avatar_id: 1, frame_id: 1, theme_skin_id: 1, font_skin_id: 1, animation_skin_id: 1,
   });
 
-  // --- Local UI state (avatar/frame choosen in EditProfile) ---
-  const [localAvatar, setLocalAvatar] = useState('cat');
-  const [localFrame, setLocalFrame] = useState('none');
-  const [localAnimationSkin, setLocalAnimationSkin] = useState('cabbage');
+  // --- Local UI state (avatar/frame choosen in EditProfile) — 从 localStorage 持久化 ---
+  const [localAvatar, setLocalAvatar] = useState(() => localStorage.getItem('juanleme_avatar') || 'cat');
+  const [localFrame, setLocalFrame] = useState(() => localStorage.getItem('juanleme_frame') || 'none');
+  const [localAnimationSkin, setLocalAnimationSkin] = useState(() => localStorage.getItem('juanleme_anime_skin') || 'cabbage');
 
   // --- Skin preferences ---
   const [skin, setSkin] = useState(() => localStorage.getItem('juanleme_skin') || 'default');
