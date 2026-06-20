@@ -215,6 +215,8 @@ export default function App() {
     setProfile((prev) => ({ ...prev, nickname: data.nickname }));
     setLocalAvatar(data.avatar);
     setLocalFrame(data.avatarFrame);
+    localStorage.setItem('juanleme_avatar', data.avatar);
+    localStorage.setItem('juanleme_frame', data.avatarFrame);
     setShowEditDialog(false);
     showToast('✨ 个人资料保存成功！');
   };
