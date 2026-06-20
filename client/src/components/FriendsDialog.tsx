@@ -9,7 +9,7 @@ interface FriendsDialogProps {
   currentSkin?: string;
 }
 
-export function FriendsDialog({ open, onOpenChange }: FriendsDialogProps) {
+export function FriendsDialog({ open, onOpenChange, skinGradientClass }: FriendsDialogProps) {
   const [friends, setFriends] = useState<Friend[]>([]);
   const [pending, setPending] = useState<Friend[]>([]);
   const [searchUid, setSearchUid] = useState('');
@@ -47,7 +47,7 @@ export function FriendsDialog({ open, onOpenChange }: FriendsDialogProps) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-      <div className="bg-[#1a1428] rounded-3xl w-[320px] h-[480px] border border-white/20 overflow-hidden shadow-2xl flex flex-col">
+      <div className={`rounded-3xl w-[320px] h-[480px] border border-white/20 overflow-hidden shadow-2xl flex flex-col ${skinGradientClass || 'bg-[#1a1428]'}`}>
         <div className="flex items-center justify-between p-4 border-b border-white/10">
           <h3 className="text-white font-semibold text-sm flex items-center gap-2">👥 好友</h3>
           <button onClick={() => onOpenChange(false)} className="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center cursor-pointer">

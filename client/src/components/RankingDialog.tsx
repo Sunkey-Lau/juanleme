@@ -16,7 +16,7 @@ interface RankingDialogProps {
 }
 
 export function RankingDialog({
-  open, onOpenChange, myNickname, myLevel, myTotalTime, myAvatar, myAvatarFrame,
+  open, onOpenChange, myNickname, myLevel, myTotalTime, myAvatar, myAvatarFrame, skinGradientClass,
 }: RankingDialogProps) {
   const [tab, setTab] = useState<'total_time' | 'level'>('total_time');
   const [data, setData] = useState<LeaderboardData | null>(null);
@@ -46,7 +46,7 @@ export function RankingDialog({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4" onClick={() => onOpenChange(false)}>
-      <div className="bg-[#1a1428] rounded-3xl w-[320px] max-h-[480px] border border-white/20 overflow-hidden shadow-2xl flex flex-col" onClick={(e) => e.stopPropagation()}>
+      <div className={`rounded-3xl w-[320px] h-[480px] border border-white/20 overflow-hidden shadow-2xl flex flex-col ${skinGradientClass || 'bg-[#1a1428]'}`} onClick={(e) => e.stopPropagation()}>
         <div className="flex items-center justify-between p-4 border-b border-white/10 shrink-0">
           <h3 className="text-white font-semibold text-sm flex items-center gap-2">🏆 排行榜</h3>
           <button onClick={() => onOpenChange(false)} className="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center cursor-pointer">
